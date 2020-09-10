@@ -1,0 +1,47 @@
+<div fxFlex fxLayout="column">
+    <p class="mat-body-2">To create a plateau for the rovers navigation, input the grid coordinates below.<br>
+        Lower left coordinates are locked at (0,0).
+    </p>
+    <form [formGroup]="form">
+        <p class="mat-title">Grid coordinates</p>
+        <div fxLayout="row" fxLayoutGap="30px">
+            <div fxLayout="column">
+                <p class="mat-caption">Lower Left:</p>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <mat-form-field>
+                        <span matPrefix>(</span>
+                        <input disabled matInput placeholder="x" [value]="0" readonly>
+                        <span matSuffix>,</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input disabled matInput placeholder="y" [value]="0" readonly>
+                        <span matSuffix>)</span>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <p class="mat-caption">Upper right:</p>
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <mat-form-field>
+                        <span matPrefix>(</span>
+                        <input matInput placeholder="x" type="text" formControlName="x">
+                        <span matSuffix>,</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="y" type="text" formControlName="y">
+                        <span matSuffix>)</span>
+                    </mat-form-field>
+                </div>
+                <div class="form-error-msg" *ngIf="form.controls['x'].hasError('pattern') || form.controls['y'].hasError('pattern')">
+                    Only numbers are accepted.
+                </div>
+                <div class="form-error-msg" *ngIf="form.hasError('sameAsOrigin')">
+                    (0, 0) coordinates are invalid.
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end start">
+            <button (click)="nextBtnClick()" [disabled]="!form.valid" mat-raised-button color="accent">NEXT</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,29 @@
+<div fxFlex fxLayout="column" fxLayoutGap="10px">
+    <mat-toolbar color="primary">
+        <span> Ukufu Tech Task</span>
+    </mat-toolbar>
+    <div class="page-container" fxFlex="100" fxLayout="row" fxLayoutAlign="center start">
+        <mat-card fxFlex="50">
+            <mat-card-header>
+                <mat-card-title>NASA Exploration Mission Simulator</mat-card-title>
+                <mat-card-subtitle>Complete simulation settings to see result</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-horizontal-stepper [linear]="true" #stepper>
+                    <mat-step [completed]="false" [editable]="true">
+                        <ng-template matStepLabel>Plateau</ng-template>
+                        <app-plateau-form #plateauForm></app-plateau-form>
+                    </mat-step>
+                    <mat-step [editable]="true">
+                        <ng-template matStepLabel>Rovers</ng-template>
+                        <app-rover-form #roverForm></app-rover-form>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>Simulation</ng-template>
+                        <app-simulation></app-simulation>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

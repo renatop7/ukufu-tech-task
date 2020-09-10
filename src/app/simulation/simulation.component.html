@@ -1,0 +1,49 @@
+<div fxFlex fxLayout="column" fxLayoutGap="10px">
+    <div fxLayout="row wrap" fxLayoutGap="10px">
+        <ng-container *ngFor="let s of simulations; let index = index;">
+            <ng-container [ngTemplateOutlet]="simulationResult" [ngTemplateOutletContext]="{ rover: s.rover, index: index }"></ng-container>
+        </ng-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end start">
+        <button *ngIf="simulationDone" mat-stroked-button (click)="restartSimulation()" color="warn">RESET</button>
+        <button *ngIf="!simulationStarted" mat-raised-button (click)="runSimulation()" color="accent">START</button>
+    </div>
+</div>
+
+<ng-template #simulationResult let-rover="rover" let-index="index">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Rover #{{index + 1}}</mat-card-title>
+            <mat-card-subtitle>Results</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="column">
+                <div>
+                    <p>
+                        <span class="mat-body-2">Grid input:</span><br>
+                        <span>{{ plateau.grid.upperRight.x }} {{ plateau.grid.upperRight.y }}</span><br>
+                        <span class="mat-body-2">Rover Input:</span><br>
+                        <span>{{ rover.origin.coord.x}} {{ rover.origin.coord.y}} {{ Cardinals[rover.origin.orientation] }}
+                            {{ rover.commandInput }}</span>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <p *ngIf="simulations[index].result === null">
+                    <span class="mat-body-2">Output:</span><br>
+                    <span>Waiting simulation start...</span><br>
+                </p>
+                <p *ngIf="simulations[index].result">
+                    <span class="mat-body-2">Output:</span><br>
+                    <span class="cmd-success">{{ rover.position.coord.x}} {{ rover.position.coord.y}}
+                        {{ Cardinals[rover.origin.orientation] }}</span>
+                </p>
+                <p *ngIf="!simulations[index].result && simulations[index].rover.commandError">
+                    <span class="mat-body-2">Last position:</span><br>
+                    <span>{{ rover.position.coord.x}} {{ rover.position.coord.y}} {{ Cardinals[rover.origin.orientation] }}</span><br>
+                    <span class="cmd-error">{{ simulations[index].rover.commandError }}</span>
+                </p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

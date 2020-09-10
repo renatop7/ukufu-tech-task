@@ -1,0 +1,19 @@
+.command-form-field {
+  width: 100%;
+  mat-form-field {
+    width: 100%;
+  }
+
+  .command-input {
+    text-transform: uppercase;
+  }
+}
+
+.form-group {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.form-actions {
+  margin: 15px 0;
+}

@@ -1,0 +1,65 @@
+<div fxFlex>
+    <p class="mat-body-2">List of Rovers in this simulation</p>
+    <ng-container *ngFor="let f of roverForms; let i = index;">
+        <div class="form-group">
+            <p class="mat-title">Rover #{{ i + 1 }}</p>
+            <ng-container [ngTemplateOutlet]="roverFormTmp" [ngTemplateOutletContext]="{form: f, index: i}"></ng-container>
+        </div>
+    </ng-container>
+    <div class="form-actions" fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="10px">
+        <button mat-stroked-button (click)="addRoverFormBtnClick()" color="primary">ADD NEW</button>
+        <button mat-raised-button [disabled]="!isFormsValid" color="accent" (click)="nextBtnClick()">NEXT</button>
+    </div>
+</div>
+
+<ng-template #roverFormTmp let-form="form" let-index="index">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <form class="rover-form" [formGroup]="form">
+            <p>Deploy coordinates and orientation</p>
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <div class="coord-form-field" fxLayout="row" fxLayoutGap="5px">
+                    <mat-form-field>
+                        <span matPrefix>(</span>
+                        <input matInput placeholder="x" type="text" formControlName="x" required>
+                        <span matSuffix>,</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="y" type="text" formControlName="y" required>
+                        <span matSuffix>)</span>
+                    </mat-form-field>
+                    <mat-form-field fxFlex>
+                        <mat-label>Orientation</mat-label>
+                        <mat-select placeholder="N" formControlName="orientation" required>
+                            <mat-option *ngFor="let cardinal of orientationOpts" [value]="cardinal.value">
+                                {{cardinal.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <span *ngIf="form.hasError('offGrid')" class="mat-caption form-error">Coordinates must be between (0,0) and
+                    ({{ plateau.grid.upperRight.x }}, {{ plateau.grid.upperRight.y }})</span>
+                <div class="command-form-field" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start baseline">
+                    <mat-form-field fxFlex>
+                        <input class="command-input" matInput placeholder="Command input" type="text" formControlName="commandInput"
+                            required>
+                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <button mat-stroked-button color="primary" (click)="removeLastCommandBtnClick(index)">-</button>
+                        <button mat-stroked-button color="primary" (click)="addCommandBtnClick(index, 'M')">M</button>
+                        <button mat-stroked-button color="primary" (click)="addCommandBtnClick(index, 'L')">L</button>
+                        <button mat-stroked-button color="primary" (click)="addCommandBtnClick(index, 'R')">R</button>
+                    </div>
+                </div>
+                <div>
+                    <span class="mat-caption" [ngClass]="[form.controls['commandInput'].hasError('pattern') ? 'form-error' : '']">Valid
+                        command
+                        inputs: M, L or R</span>
+                </div>
+            </div>
+        </form>
+        <div fxLayout="row">
+            <button mat-stroked-button color="warn" (click)="removeRoverFormBtnClick(index)">REMOVE</button>
+        </div>
+        <mat-divider inset></mat-divider>
+    </div>
+</ng-template>
